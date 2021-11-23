@@ -42,18 +42,18 @@
 
 <script>
 export default {
-  name: "Register",
+  name: 'Register',
   data() {
     return {
       registerStatus: false,
-    };
+    }
   },
   methods: {
     handleClick() {
-      this.$emit("update-status", this.registerStatus);
+      this.$emit('update-status', this.registerStatus)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

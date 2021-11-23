@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import Register from "./Register.vue";
+import Register from './Register.vue'
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   components: {
     Register,
   },
@@ -64,9 +64,9 @@ export default {
   data() {
     return {
       setRegister: false,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
