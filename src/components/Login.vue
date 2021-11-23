@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <section class="login-container">
     <div class="login-content">
       <div class="login-text">
         <h1 class="login-text__title">
@@ -34,24 +34,37 @@
           </button>
           <a class="login-option__link" href="#">Mot de passe oublié ?</a>
           <div class="login-option__line"></div>
-          <button class="login-option__newAccountBtn">
+          <button
+            @click="setRegister = true"
+            class="login-option__newAccountBtn"
+          >
             Créer un nouveau compte
           </button>
         </div>
         <p class="login-input__text">
-          <a class="login-input__link" href="#">Créer une Page</a> pour une
+          <a class="login-input__link" href="/">Créer une Page</a> pour une
           célébrité, une marque ou une entreprise.
         </p>
       </div>
     </div>
-  </div>
+    <Register v-if="setRegister" @update-status="setRegister = $event" />
+  </section>
 </template>
 
 <script>
+import Register from "./Register.vue";
 export default {
   name: "HelloWorld",
+  components: {
+    Register,
+  },
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      setRegister: false,
+    };
   },
 };
 </script>
@@ -64,24 +77,43 @@ $color-secondary: rgb(101, 181, 67);
 // Font style
 $font-family: Helvetica, Arial, sans-serif;
 
-// Components
+@mixin small {
+  @media (max-width: 1020px) {
+    @content;
+  }
+}
+
+// Component
 .login-container {
   background-color: rgb(240, 242, 245);
 }
 .login-submit__container {
   width: 400px;
+  @include small {
+    margin: 40px auto 0;
+  }
 }
 .login-content {
+  height: 100vh;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 145px 90px 300px;
   margin: auto;
+  padding-top: 20vh;
   max-width: 1000px;
+  @include small {
+    padding-top: 5vh;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 }
 .login-text {
-  width: 50%;
-  padding-top: 70px;
+  width: 60%;
+  padding-top: 8%;
+  @include small {
+    width: 100%;
+    padding-top: 35px;
+    margin: 0 auto;
+    text-align: center;
+  }
   &__title {
     color: $color-primary;
     font-family: $font-family;
@@ -94,6 +126,11 @@ $font-family: Helvetica, Arial, sans-serif;
     font-size: 28px;
     width: 480px;
     margin: 0;
+    @include small {
+      width: 360px;
+      font-size: 24px;
+      margin: 0 auto;
+    }
   }
 }
 .login-input {
@@ -106,7 +143,7 @@ $font-family: Helvetica, Arial, sans-serif;
     font-family: $font-family;
     font-size: 14px;
     text-align: center;
-    margin: 24px auto 0;
+    margin: 30px auto 0;
   }
   &__link {
     text-decoration: none;
@@ -132,7 +169,8 @@ $font-family: Helvetica, Arial, sans-serif;
   &__sendToApiBtn {
     color: white;
     background-color: $color-primary;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 700;
     border: none;
     border-radius: 6px;
     padding: 14px 0;
@@ -156,7 +194,8 @@ $font-family: Helvetica, Arial, sans-serif;
   &__newAccountBtn {
     color: white;
     background-color: $color-secondary;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 700;
     border: none;
     border-radius: 6px;
     padding: 14px 0;
