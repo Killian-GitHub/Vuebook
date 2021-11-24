@@ -5,10 +5,27 @@
     <i @click="handleClick" class="fas fa-times close"></i>
     <div class="border" />
     <form class="form" action="submit" method="post">
-      <input class="name input" type="text" placeholder="Prénom" />
-      <input class="name input" type="text" placeholder="Nom de famille" />
       <input
-        class="password input"
+        v-model="firstName"
+        class="name input"
+        type="text"
+        placeholder="Prénom"
+      />
+      <input
+        v-model="lastName"
+        class="name input"
+        type="text"
+        placeholder="Nom de famille"
+      />
+      <input
+        v-model="email"
+        class="data input"
+        type="email"
+        placeholder="Adresse e-mail"
+      />
+      <input
+        v-model="password"
+        class="data input"
         type="password"
         placeholder="Nouveau mot de passe"
       />
@@ -36,21 +53,54 @@
       notifications par texto de notre part et vous pouvez à tout moment vous
       désabonner.
     </p>
-    <button type="submit">S'inscrire</button>
+    <button @click="submitClick" type="submit">S'inscrire</button>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Register',
   data() {
     return {
       registerStatus: false,
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
     }
   },
   methods: {
     handleClick() {
       this.$emit('update-status', this.registerStatus)
+    },
+    submitClick(e) {
+      e.preventDefault()
+
+      const formData = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        password: this.password,
+      }
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:3000/api/auth/signup',
+        data: formData,
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(() => {
+          alert('Votre compte a bien été créé')
+          location.reload()
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('Une érreur est survenue')
+        })
     },
   },
 }
@@ -134,9 +184,9 @@ $btn-color: rgb(101, 181, 67);
     width: 43%;
     margin-bottom: 12px;
   }
-  .password {
+  .data {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   .choice {
     border: solid 1px lightgray;
