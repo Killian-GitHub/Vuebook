@@ -12,17 +12,15 @@
       <div class="login-submit__container">
         <div class="login-option">
           <input
+            v-model="email"
             class="login-option__input"
             type="text"
-            name="email"
-            id="email"
-            placeholder="Adresse e-mail ou numéro de tél."
+            placeholder="Adresse e-mail"
           />
           <input
+            v-model="password"
             class="login-option__input"
-            type="text"
-            name="password"
-            id="password"
+            type="password"
             placeholder="Mot de passe"
           />
           <button
@@ -33,7 +31,7 @@
             Se connecter
           </button>
           <a class="login-option__link" href="#">Mot de passe oublié ?</a>
-          <div class="login-option__line"></div>
+          <div class="login-option__line" />
           <button
             @click="setRegister = true"
             class="login-option__newAccountBtn"
@@ -53,8 +51,9 @@
 
 <script>
 import Register from './Register.vue'
+import axios from 'axios'
 export default {
-  name: 'HelloWorld',
+  name: 'SignIn',
   components: {
     Register,
   },
@@ -64,7 +63,37 @@ export default {
   data() {
     return {
       setRegister: false,
+      email: '',
+      password: '',
     }
+  },
+  methods: {
+    submitClick(e) {
+      e.preventDefault()
+
+      const formData = {
+        email: this.email,
+        password: this.password,
+      }
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:3000/api/auth/login',
+        data: formData,
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          localStorage.setItem('accessToken', res.data.token)
+          localStorage.setItem('userId', res.data.userId)
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('Adresse email ou mot de passe incorrect')
+        })
+    },
   },
 }
 </script>
@@ -110,7 +139,7 @@ $font-family: Helvetica, Arial, sans-serif;
   padding-top: 8%;
   @include small {
     width: 100%;
-    padding-top: 35px;
+    padding-top: 5px;
     margin: 0 auto;
     text-align: center;
   }
@@ -160,11 +189,14 @@ $font-family: Helvetica, Arial, sans-serif;
   box-shadow: 5px 1px 15px 3px #c4c4c4;
   &__input {
     font-size: 16px;
-    padding: 15px 10px;
+    padding: 15px 15px;
     border: 1px solid;
     border-radius: 3px;
     border-color: rgb(221, 223, 226);
     margin-bottom: 15px;
+    &::placeholder {
+      font-size: 17px;
+    }
   }
   &__sendToApiBtn {
     color: white;
